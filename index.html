@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WitchHunt Mod Tool</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/jquery.countdown.css" rel="stylesheet" type="text/css">
+    <link href="css/modapp.css" rel="stylesheet" type="text/css">
+
+    <!-- Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/Montserrat.css" rel='stylesheet' type='text/css'>
+
+    <!-- IE8 support for HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="body" class="gs">
+
+    <!-- Navigation -->
+    <nav class="header">
+        <div id="headerDivOuter" class="header">
+			<div id="headerDivInner" class="header">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div id="headerDivLeft">
+					<table class="header-table">
+						<tr>
+							<td id="titleCell">
+								<p id="headerLabel" class="" href="#page-top"><img src="img/witchhunt_logo.png"></p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="uibtns">
+				<div id="headerDivRight2" class="">
+					<table class="header-table">
+						<tr>
+							<td class="btn-toolbar">
+								<div id="GUIButtonsA" class="btn-group header-buttons">
+									<button class="btn control-button control-button-GUI reveal-roles-button" onClick="toggleHideRoles()">
+										<span class="glyphicon glyphicon-eye-open reveal-roles-icon"></span>
+									</button>
+									<button class="btn control-button control-button-GUI undo-button" onClick="processUndo()">
+										<span class="glyphicon glyphicon-chevron-left"></span>
+									</button>
+									<button class="btn control-button control-button-GUI settings-button" onClick="">
+										<span class="glyphicon glyphicon-cog"></span>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="headerDivRight" class="">
+					<table class="header-table">
+						<tr>
+							<!--<td class="btn-toolbar">
+								<div class="btn-group header-buttons">
+									<button id="volumeMute" class="btn control-button control-button-volume"><span class="glyphicon glyphicon-volume-off"></span></button>
+									<button id="volumeDown" class="btn control-button control-button-volume"><span class="glyphicon glyphicon-volume-down"></span></button>
+									<button id="volumeUp" class="btn control-button control-button-volume"><span class="glyphicon glyphicon-volume-up"></span></button>
+								</div>
+							</td>-->
+							<td id="timerCell">
+								<p id="timer" class="" onClick="timerButtonPlay()" href="#page-top">0:00</p>
+							</td>
+							<td class="btn-toolbar">
+								<div class="btn-group header-buttons">
+									<button id="timerReset" class="btn control-button control-button-timer" onClick="timerButtonReset()"><span class="glyphicon glyphicon-fast-backward"></span></button>
+									<button id="timerBack" class="btn control-button control-button-timer" onClick="timerButtonBack()"><span class="glyphicon glyphicon-backward"></span></button>
+									<button id="timerPlay" class="btn control-button control-button-timer" onClick="timerButtonPlay()"><span id="play" class="glyphicon glyphicon-play"></span></button>
+									<button id="timerForward" class="btn control-button control-button-timer" onClick="timerButtonForward()"><span class="glyphicon glyphicon-forward"></span></button>
+								</div>
+								<div id="GUIButtonsB" class="btn-group header-buttons">
+									<button class="btn control-button control-button-GUI reveal-roles-button" onClick="toggleHideRoles()">
+										<span class="glyphicon glyphicon-eye-open reveal-roles-icon"></span>
+									</button>
+									<button class="btn control-button control-button-GUI undo-button" onClick="processUndo()">
+										<span class="glyphicon glyphicon-chevron-left"></span>
+									</button>
+									<button class="btn control-button control-button-GUI settings-button" onClick="">
+										<span class="glyphicon glyphicon-cog"></span>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+        </div>
+		</div>
+    </nav>
+
+	<div id="gameSettings" class="main-section">
+		<div id="selectRolesPrompt" class="prompt"><p class="modSecret instructions">Select your characters</p></div>
+			<div id="roleButtons" class="btn-group-vertical" data-toggle="buttons">
+				<!-- populate dynamically-->
+			</div>
+		<br>
+		<div id="rolesSelectedCount" class="prompt"></div>
+		<div id="advancedRulesDiv" class="btn-group-vertical" data-toggle="buttons">
+			<label class='btn'>
+				<input id='advancedRulesInput' type='checkbox' onChange='clickAdvancedRulesButton()'>
+				<span id='advancedRulesButtonText'>Advanced Rules Off</span>
+			</label>
+		</div>
+		<br>
+		<div id="handicapLabel" class="prompt"><p class='modSecret'>Handicap:</p></div>
+		<div id="handicapDiv" class="btn-group" data-toggle="buttons">
+			<label class='btn handicap'>
+				<input id='villageHandicapInput' type='radio' onChange='clickHandicapButtonVillagers()'>
+				<span id='villageHandicapButtonText'>Villagers</span>
+			</label>
+			<label class='btn handicap active'>
+				<input id='noneHandicapInput' type='radio' checked="checked" onChange='clickHandicapButtonNone()'>
+				<span id='noneHandicapButtonText'>None</span>
+			</label>
+			<label class='btn handicap'>
+				<input id='witchHandicapInput' type='radio' onChange='clickHandicapButtonWitches()'>
+				<span id='witchHandicapButtonText'>Witches</span>
+			</label>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div id="dealButtons" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bottom">
+			<button id="dealButton" class="btn btn-primary big-button" onClick="initGame()">Deal</button>
+		</div>
+	</div>
+
+	<div id="playerList" class="main-section">
+		<div class="pt-section">
+			<button class="pt-button btn" onClick="ptClick()">Peeping Tom</button>
+			<div class="pt-prompt prompt">Peeping Tom Prompt</div>
+		</div>
+		<div id="playerListPrompt" class="prompt">Player List Prompt</div>
+		<div id="playerListPrompt2" class="prompt">Player List Prompt 2</div>
+		<table id="playerTable" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table player-table">
+			<thead>
+				<tr class="player-list-header player-list-row custom-stripe-row">
+					<!--<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Edit
+					</th>-->
+					<th class="col-lg-7 col-md-7 col-sm-7 col-xs-7 player-name">
+						Player Name
+						<button id="resetNamesButton" class="btn" onClick="resetNamesToDefault()">Reset Names</button>
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Team
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Char
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Select
+					</th>
+				</tr>
+			<tbody id="playerTableBody">
+				<!--populate dynamically-->
+			</tbody>
+		</table>
+		<br>
+		<div id="redealButtons" class="advance-button-group col-lg-12 col-md-12 col-sm-12 col-xs-12 bottom">
+			<button id="addPlayerButton" class="btn" onClick="addPlayer()">+ Player</button>
+			<button id="subtractPlayerButton" class="btn" onClick="subtractPlayer()">- Player</button>
+			<button id="redealButton" class="btn" onClick="initGame()">Redeal</button>
+		</div>
+		<div id="gameStartButtons" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bottom">
+			<button id="gameStartButton" class="btn btn-primary big-button" onClick="step()">Start Game</button>
+		</div>
+		<div id="debugButtons" class="advance-button-group col-lg-12 col-md-12 col-sm-12 col-xs-12 bottom">
+			<button id="debugButton" class="btn" onClick="debugAutoAdvanceStart()">Debug</button>
+		</div>
+		<div id="playerListButtons" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bottom">
+			<button id="noLynchButton" class="btn no-choice-button" onClick="stepSubmit(77, false)">No One</button>
+			<div id="interruptButtons" class="btn-group">
+				<!-- populate dynamically-->
+			</div>
+		</div>
+	</div>
+
+	<div id="choice" class="main-section">
+		<table class="spacer-table">
+			<tr>
+				<td>
+					<div class="pt-section">
+						<button class="pt-button btn" onClick="ptClick()">Peeping Tom</button>
+						<div class="pt-prompt prompt">Peeping Tom Prompt</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="choicePrompt" class="prompt"></div>
+				</td>
+			</tr>
+		</table>
+		<br>
+		<div class="advance-button-group bottom">
+			<div class="block">
+				<button id="choice0" class="choice-button btn" onClick="stepSubmit(0, false)">Choice 1</button>
+				<button id="choice1" class="choice-button btn" onClick="stepSubmit(1, false)">Choice 2</button>
+				<button id="choice2" class="choice-button btn" onClick="stepSubmit(2, false)">Choice 3</button>
+				<button id="choice3" class="choice-button btn" onClick="stepSubmit(3, false)">Choice 4</button>
+				<button id="choice4" class="choice-button btn" onClick="stepSubmit(4, false)">Choice 5</button>
+				<button id="choice77" class="choice-button btn no-choice-button" onClick="stepSubmit(77, false)">None</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="roleList" class="main-section">
+		<div id="roleListPrompt" class="prompt">Player List Prompt</div>
+		<table id="roleListTable" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table player-table">
+			<thead>
+				<tr class="player-list-header player-list-row custom-stripe-row">
+					<th class="col-lg-7 col-md-7 col-sm-7 col-xs-7 player-name">
+						Character
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Select
+					</th>
+				</tr>
+			<tbody id="roleListTableBody">
+				<!--populate dynamically-->
+			</tbody>
+		</table>
+
+		<br>
+	</div>
+
+	<div id="info" class="main-section">
+		<table class="spacer-table">
+			<tr>
+				<td>
+					<div class="pt-section">
+						<button class="pt-button btn" onClick="ptClick()">Peeping Tom</button>
+						<div class="pt-prompt prompt">Peeping Tom Prompt</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="infoPrompt" class="prompt"></div>
+				</td>
+			</tr>
+		</table>
+		<br>
+		<div class="advance-button-group bottom bottom-floor">
+			<div class="block">
+				<button id="infoButton" class="btn" onClick="step()">Next</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="win" class="main-section">
+		<div id="winPrompt" class="prompt"></div>
+		<table id="winPlayerTable" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 table player-table">
+			<thead>
+				<tr class="player-list-header player-list-row custom-stripe-row">
+					<!--<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Edit
+					</th>-->
+					<th class="col-lg-7 col-md-7 col-sm-7 col-xs-7 player-name">
+						Player Name
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Team
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Char
+					</th>
+					<th class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						Select
+					</th>
+				</tr>
+			<tbody id="winPlayerTableBody">
+				<!--populate dynamically-->
+			</tbody>
+		</table>
+		<br>
+		<div id="winButtons" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 advance-button-group bottom">
+			<button id="winButton" class="btn" onClick="setupGame()">New Game</button>
+			<button id="winDebugButton" class="btn" onClick="debugAutoAdvanceStart()">Debug</button>
+		</div>
+	</div>
+
+	<div id="confirmModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal_wrapper" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span>
+							<span class="sr-only">Close</span>
+						</button>
+						<h4 id="confirmModalPrompt" class="modal-title">Confirm?</h4>
+					</div>
+					<div class="modal-body">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Nope</button>
+						<button id="confirmModalButton" type="button" class="btn btn-primary" onClick="">Confirm</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="restoreModal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal_wrapper" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 id="confirmModalPrompt" class="modal-title">Saved Game Detected</h4>
+					</div>
+					<div class="modal-body">
+						<button type="button" class="btn btn-primary" onClick="restoreGame()">Restore</button>
+						<button type="button" class="btn btn-primary" onClick="setupGame()">New Game</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <script src="js/jquery-1.11.2.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	<script src="js/jquery.plugin.min.js"></script>
+	<script src="js/jquery.countdown.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/modapp-steps.js"></script>
+    <script src="js/modapp.js"></script>
+
+</body>
+
+</html>
